@@ -1,4 +1,4 @@
-Thanks for sharing the project file. Here's how you can break this project down into manageable steps and start working right away. I'll give you a full action plan that aligns with the grading rubric and due date (August 1st, 2025):
+Project Plan 
 
 ---
 
