@@ -1,19 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-<center>
-	<font color="DodgerBlue" size="5" style="font-family: avenir">
-		<body style="background: url('background.webp') no-repeat center center fixed; background-size: cover;">
-			<h1>The employee {{ name }} wassuccessfully added to the database</h1><br>
-			<h2>The Employee has been added to the database</h2><br>
-			<h2>{{ name }}</h2><br>
-			<title>Add Emp Output</title>
-			<a href="{{ url_for('home') }}">Back</a>
-		</body>
-	</font>
-</center>
+  <title>{{ header or 'Add Employee Output' }}</title>
+  <style>
+    body {
+      background-image: url('{{ background_url }}');
+      background-size: cover;
+      background-position: center;
+      margin: 0;
+      padding: 0;
+      font-family: Avenir, Arial, sans-serif;
+    }
+    .content {
+      text-align: center;
+      padding-top: 80px;
+      background: rgba(255,255,255,0.6); /* Light overlay for readability */
+      min-height: 100vh;
+      border-radius: 0;
+    }
+    h1, h2 {
+      margin: 20px 0;
+      font-weight: normal;
+    }
+    a {
+      font-size: 18px;
+      text-decoration: underline;
+      /* No color specified */
+    }
+  </style>
 </head>
 <body>
-
+  <div class="content">
+    {% if header %}
+      <h1>{{ header }}</h1>
+    {% elif name %}
+      <h1>The employee {{ name }} was successfully added to the database</h1>
+    {% else %}
+      <h1>Employee successfully added to the database</h1>
+    {% endif %}
+    {% if name %}
+      <h2>{{ name }}</h2>
+    {% endif %}
+    <h2>The Employee has been added to the database</h2>
+    <br>
+    <a href="{{ url_for('home') }}">Back</a>
+  </div>
 </body>
 </html>

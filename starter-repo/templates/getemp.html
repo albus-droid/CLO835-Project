@@ -1,27 +1,66 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-	<title>Get Employee Information</title>
+  <title>{{ header or 'Get Employee Information' }}</title>
+  <style>
+    body {
+      background-image: url('{{ background_url }}');
+      background-size: cover;
+      background-position: center;
+      margin: 0;
+      padding: 0;
+      font-family: Avenir, Arial, sans-serif;
+    }
+    .content {
+      text-align: center;
+      padding-top: 70px;
+      background: rgba(255,255,255,0.7); /* Light overlay for readability */
+      margin: 60px auto;
+      width: 90%;
+      max-width: 420px;
+      border-radius: 12px;
+      padding: 30px;
+    }
+    input, button {
+      font-size: 1rem;
+      margin-bottom: 15px;
+      width: 90%;
+      max-width: 300px;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    button {
+      margin-top: 16px;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      /* No color or background specified */
+    }
+  </style>
 </head>
-<center>
-	<font color="black" size="5" style="font-family: avenir">
+<body>
+  <div class="content">
+    {% if header %}
+      <h1>{{ header }}</h1>
+    {% else %}
+      <h1>Employee Information</h1>
+    {% endif %}
+    {% if name %}
+      <h2>Hello from {{ name }}!</h2>
+    {% endif %}
 
-		<h1 style="color: DodgerBlue">Employee Information</h1>
-
-		<body style="background: url('background.webp') no-repeat center center fixed; background-size: cover;">
-
-			<form action="/fetchdata" autocomplete="on" method="POST">
-
-				<h2 style="color: grey">Enter Employee ID</h2>
-
-		  		Employee ID:<br> <input style="height:25px;font-size:14pt;" type="number" name="emp_id" autofocus size="40"><br><br>
-
-
-		  		<button type="submit" style="background: grey; height: 45px; width: 200px; color: white; size: 5; font:oblique;">FETCH INFO</button><br><br>
-
-			</form>
-
-		</body>
-	</font>
-</center>
+    <form action="/fetchdata" method="POST">
+      <h2>Enter Employee ID</h2>
+      Employee ID:<br>
+      <input type="number" name="emp_id" autofocus><br>
+      <button type="submit">FETCH INFO</button>
+    </form>
+  </div>
+</body>
 </html>

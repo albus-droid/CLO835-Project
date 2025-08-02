@@ -1,20 +1,42 @@
 <!doctype html>
-<title>Hello from Flask</title>
-<body style="background: url('background.webp') no-repeat center center fixed; background-size: cover;"></body>
-<div style="color: #e4e4e4;
-    text-align:  center;
-    height: 90px;
-    vertical-align:  middle;">
-{% if name %}
-  <h1>Hello from {{ name }}!</h1>
-{% else %}
-  <h1>Hello From CLO835!</h1>
-{% endif %}
+<html>
+  <head>
+    <title>{{ header }}</title>
+    <style>
+      body {
+        background-image: url('{{ background_url }}');
+        background-size: cover;
+        background-position: center;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+      .content {
+        text-align: center;
+        padding-top: 100px;
+        /* Optional: semi-transparent background for readability */
+        background-color: rgba(255,255,255,0.6); 
+        min-height: 100vh;
+      }
+      h1, h2 {
+        margin: 0.5em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      {% if header %}
+        <h1>{{ header }}</h1>
+      {% endif %}
 
-  {% if contents %}
-  <textarea rows="10" cols="50">
-    {{ contents }}
-  </textarea>
-  {% endif %}
+      {% if name %}
+        <h2>Hello from {{ name }}!</h2>
+      {% else %}
+        <h2>Hello From CLO835!</h2>
+      {% endif %}
 
-</div>
+      <p>This is a simple Flask application deployed on Kubernetes.<br>
+      It uses MySQL for data storage and S3 for background image hosting.</p>
+    </div>
+  </body>
+</html>

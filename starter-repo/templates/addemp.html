@@ -1,35 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Add Employee Information</title>
+  <title>{{ header }}</title>
+  <style>
+    body {
+      background-image: url('{{ background_url }}');
+      background-size: cover;
+      background-position: center;
+      margin: 0;
+      padding: 0;
+      font-family: Avenir, Arial, sans-serif;
+    }
+    .content {
+      text-align: center;
+      padding: 40px 20px 20px 20px;
+      background: rgba(255,255,255,0.7); /* light overlay for readability */
+      margin: 60px auto;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 12px;
+    }
+    input, button {
+      font-size: 1rem;
+      margin-bottom: 15px;
+      width: 80%;
+      max-width: 350px;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    button {
+      margin-top: 12px;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      /* No color or background specified */
+    }
+    a {
+      font-size: 16px;
+      text-decoration: underline;
+      /* No color specified */
+    }
+  </style>
 </head>
-<center>
-	<font color="black" size="4" style="font-family: avenir">
+<body>
+  <div class="content">
+    {% if header %}
+      <h1>{{ header }}</h1>
+    {% endif %}
+    {% if name %}
+      <h2>Hello from {{ name }}!</h2>
+    {% endif %}
 
-		<h1 style="color: DodgerBlue">Employee Database</h1>
-		<body style="background: url('background.webp') no-repeat center center fixed; background-size: cover;" >
-			<form action="/addemp" autocomplete="on" method = "POST" enctype="multipart/form-data">
+    <form action="/addemp" method="POST" enctype="multipart/form-data">
+      <div>
+        Employee ID:<br>
+        <input type="number" name="emp_id" autofocus><br>
 
-			
+        First Name:<br>
+        <input type="text" name="first_name"><br>
 
-		  		Employee ID:<br> <input style="height:25px;font-size:14pt; color:grey;" type="number" name="emp_id" autofocus size="40"><br><br>
+        Last Name:<br>
+        <input type="text" name="last_name"><br>
 
-		  		First Name:<br> <input style="height:25px;font-size:14pt;color:grey;" type="text" name="first_name" ><br><br>
+        Primary Skills:<br>
+        <input type="text" name="primary_skill"><br>
 
-		  		Last Name:<br> <input style="height:25px;font-size:14pt;color:grey;" type="text" name="last_name"><br><br>
+        Location:<br>
+        <input type="text" name="location"><br>
 
-		  		Primary Skills:<br> <input style="height:25px;font-size:14pt;color:grey;" type="text" name="primary_skill"><br><br>
+        <button type="submit">UPDATE DATABASE</button>
+        <button type="submit" formaction="/getemp">GET EMPLOYEE INFORMATION</button>
+      </div>
+    </form>
 
-		  		Location:<br> <input style="height:25px;font-size:14pt;color:grey;" type="text" name="location"><br><br>
-
-		  		<button type="submit" style="background: grey; height: 45px; width: 200px; color: white; size: 5; font:oblique;">UPDATE DATABASE</button><br><br>
-		  		<button type="submit" formaction="/getemp" style="background: grey; height: 45px; width: 200px; color:white; font:oblique;">GET EMPLOYEE INFORMATION</button><br><br>
-
-			</form>
-			<br><br><br><br><br><br><br><br>
-            <a href="/about">About Us</a>
-		</body>
-
-	</font>
-</center>
+    <br>
+    <a href="/about">About Us</a>
+  </div>
+</body>
 </html>
