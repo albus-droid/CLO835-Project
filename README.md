@@ -65,14 +65,14 @@ Project Plan
 
 ## ✅ Phase 5: K8s Manifests + S3 Access (Day 5–6)
 
-* [ ] Create:
+* [x] Create:
 
   * `configmap.yaml` – with S3 image URL + your name
   * `secret.yaml` – with DB credentials
   * `pvc.yaml` – 2Gi, ReadWriteOnce
   * `serviceaccount.yaml` – named `clo835` with IRSA access to S3
   * `role.yaml` + `rolebinding.yaml` – allow namespace read/create
-* [ ] Use `aws iam create-role` and `eksctl create iamserviceaccount` for IRSA
+* [x] Use `aws iam create-role` and `eksctl create iamserviceaccount` for IRSA
 
 ---
 
