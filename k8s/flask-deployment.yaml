@@ -1,3 +1,4 @@
+# flask-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -68,3 +69,15 @@ spec:
               secretKeyRef:
                 name: app-secret
                 key: AWS_SESSION_TOKEN
+        volumeMounts:
+          - name: aws-creds
+            mountPath: /root/.aws/credentials
+            subPath: credentials
+            readOnly: true
+      volumes:
+        - name: aws-creds
+          secret:
+            secretName: aws-creds
+            items:
+              - key: credentials
+                path: credentials
