@@ -9,12 +9,12 @@ Project Plan
 
   * Use background image (remove background color)
   * Display your name via env var from ConfigMap
-* [ ] Use Python + `boto3` to:
+* [x] Use Python + `boto3` to:
 
   * Fetch image from private S3 using boto3
   * Store it locally and serve from there
-* [ ] Log image URL to stdout
-* [ ] Flask app should:
+* [x] Log image URL to stdout
+* [x] Flask app should:
 
   * Use port `81`
   * Get MySQL credentials from environment variables (`K8s Secrets`)
@@ -24,11 +24,11 @@ Project Plan
 
 ## ✅ Phase 2: Dockerize and Test Locally (Day 2–3)
 
-* [ ] Create a `Dockerfile`
-* [ ] Add port 81 exposure
-* [ ] Copy app + requirements
-* [ ] Use `CMD` or `ENTRYPOINT` to run the app
-* [ ] Test it locally using:
+* [x] Create a `Dockerfile`
+* [x] Add port 81 exposure
+* [x] Copy app + requirements
+* [x] Use `CMD` or `ENTRYPOINT` to run the app
+* [x] Test it locally using:
 
   ```bash
   docker build -t clo835-final .
