@@ -1,51 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Get Employee Information</title>
+  <title>{{ header or 'Get Employee Information' }}</title>
   <style>
     body {
       background-image: url('{{ background_url }}');
       background-size: cover;
+      background-position: center;
       margin: 0;
       padding: 0;
-      font-family: Avenir, sans-serif;
+      font-family: Avenir, Arial, sans-serif;
     }
     .content {
-      color: black;
       text-align: center;
-      padding-top: 100px;
-      background-color: rgba(255, 255, 255, 0.8);
-      margin: 50px auto;
-      width: 60%;
-      border-radius: 10px;
+      padding-top: 70px;
+      background: rgba(255,255,255,0.7); /* Light overlay for readability */
+      margin: 60px auto;
+      width: 90%;
+      max-width: 420px;
+      border-radius: 12px;
       padding: 30px;
     }
     input, button {
-      height: 30px;
-      font-size: 14pt;
+      font-size: 1rem;
       margin-bottom: 15px;
+      width: 90%;
+      max-width: 300px;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
     button {
-      background: grey;
-      color: white;
-      height: 45px;
-      width: 250px;
-      font: oblique;
-      margin: 10px;
+      margin-top: 16px;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      /* No color or background specified */
     }
   </style>
 </head>
 <body>
   <div class="content">
-    <h1 style="color: DodgerBlue;">Employee Information</h1>
+    {% if header %}
+      <h1>{{ header }}</h1>
+    {% else %}
+      <h1>Employee Information</h1>
+    {% endif %}
     {% if name %}
       <h2>Hello from {{ name }}!</h2>
     {% endif %}
 
     <form action="/fetchdata" method="POST">
-      <h2 style="color: grey;">Enter Employee ID</h2>
+      <h2>Enter Employee ID</h2>
       Employee ID:<br>
-      <input type="number" name="emp_id" autofocus size="40"><br>
+      <input type="number" name="emp_id" autofocus><br>
       <button type="submit">FETCH INFO</button>
     </form>
   </div>

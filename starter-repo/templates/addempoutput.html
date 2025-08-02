@@ -1,39 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Add Employee Output</title>
+  <title>{{ header or 'Add Employee Output' }}</title>
   <style>
     body {
       background-image: url('{{ background_url }}');
       background-size: cover;
+      background-position: center;
       margin: 0;
       padding: 0;
-      font-family: Avenir, sans-serif;
+      font-family: Avenir, Arial, sans-serif;
     }
     .content {
-      color: #ffffff;
       text-align: center;
-      padding-top: 100px;
-      background-color: rgba(0, 0, 0, 0.5);
-      height: 100vh;
+      padding-top: 80px;
+      background: rgba(255,255,255,0.6); /* Light overlay for readability */
+      min-height: 100vh;
+      border-radius: 0;
     }
     h1, h2 {
-      margin: 20px;
+      margin: 20px 0;
+      font-weight: normal;
     }
     a {
-      color: #00ffff;
       font-size: 18px;
-      text-decoration: none;
+      text-decoration: underline;
+      /* No color specified */
     }
   </style>
 </head>
 <body>
   <div class="content">
-    {% if name %}
+    {% if header %}
+      <h1>{{ header }}</h1>
+    {% elif name %}
       <h1>The employee {{ name }} was successfully added to the database</h1>
-      <h2>{{ name }}</h2>
     {% else %}
       <h1>Employee successfully added to the database</h1>
+    {% endif %}
+    {% if name %}
+      <h2>{{ name }}</h2>
     {% endif %}
     <h2>The Employee has been added to the database</h2>
     <br>

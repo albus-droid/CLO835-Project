@@ -1,49 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Add Employee Information</title>
+  <title>{{ header }}</title>
   <style>
     body {
       background-image: url('{{ background_url }}');
       background-size: cover;
+      background-position: center;
       margin: 0;
       padding: 0;
-      font-family: Avenir, sans-serif;
+      font-family: Avenir, Arial, sans-serif;
     }
     .content {
-      color: black;
       text-align: center;
-      padding-top: 50px;
-      background-color: rgba(255, 255, 255, 0.8);
-      margin: 50px auto;
-      width: 60%;
-      border-radius: 10px;
-      padding: 30px;
+      padding: 40px 20px 20px 20px;
+      background: rgba(255,255,255,0.7); /* light overlay for readability */
+      margin: 60px auto;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 12px;
     }
     input, button {
-      height: 30px;
-      font-size: 14pt;
-      color: grey;
+      font-size: 1rem;
       margin-bottom: 15px;
+      width: 80%;
+      max-width: 350px;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
     button {
-      background: grey;
-      color: white;
-      height: 45px;
-      width: 250px;
-      font: oblique;
-      margin: 10px;
+      margin-top: 12px;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      /* No color or background specified */
     }
     a {
-      color: DodgerBlue;
       font-size: 16px;
-      text-decoration: none;
+      text-decoration: underline;
+      /* No color specified */
     }
   </style>
 </head>
 <body>
   <div class="content">
-    <h1 style="color: DodgerBlue;">Employee Database</h1>
+    {% if header %}
+      <h1>{{ header }}</h1>
+    {% endif %}
     {% if name %}
       <h2>Hello from {{ name }}!</h2>
     {% endif %}
@@ -51,7 +60,7 @@
     <form action="/addemp" method="POST" enctype="multipart/form-data">
       <div>
         Employee ID:<br>
-        <input type="number" name="emp_id" autofocus size="40"><br>
+        <input type="number" name="emp_id" autofocus><br>
 
         First Name:<br>
         <input type="text" name="first_name"><br>
@@ -65,12 +74,12 @@
         Location:<br>
         <input type="text" name="location"><br>
 
-        <button type="submit">UPDATE DATABASE</button><br>
-        <button type="submit" formaction="/getemp">GET EMPLOYEE INFORMATION</button><br>
+        <button type="submit">UPDATE DATABASE</button>
+        <button type="submit" formaction="/getemp">GET EMPLOYEE INFORMATION</button>
       </div>
     </form>
 
-    <br><br>
+    <br>
     <a href="/about">About Us</a>
   </div>
 </body>

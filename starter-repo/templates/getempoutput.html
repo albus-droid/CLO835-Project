@@ -1,38 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Employee Information</title>
+  <title>{{ header or 'Employee Information' }}</title>
   <style>
     body {
       background-image: url('{{ background_url }}');
       background-size: cover;
+      background-position: center;
       margin: 0;
       padding: 0;
-      font-family: Avenir, sans-serif;
+      font-family: Avenir, Arial, sans-serif;
     }
     .content {
-      color: black;
       text-align: center;
-      padding-top: 100px;
-      background-color: rgba(255, 255, 255, 0.85);
-      margin: 50px auto;
-      width: 60%;
-      border-radius: 10px;
+      padding-top: 70px;
+      background: rgba(255,255,255,0.7);
+      margin: 60px auto;
+      width: 90%;
+      max-width: 420px;
+      border-radius: 12px;
       padding: 30px;
     }
     h1, h2 {
-      margin: 20px;
+      margin: 20px 0;
+      font-weight: normal;
     }
     a {
-      color: DodgerBlue;
       font-size: 18px;
-      text-decoration: none;
+      text-decoration: underline;
+      /* No color specified */
+    }
+    p {
+      margin: 8px 0;
+      font-size: 1rem;
+    }
+    strong {
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <div class="content">
-    <h1 style="color: DodgerBlue;">Employee Information</h1>
+    {% if header %}
+      <h1>{{ header }}</h1>
+    {% else %}
+      <h1>Employee Information</h1>
+    {% endif %}
     {% if name %}
       <h2>Requested by {{ name }}</h2>
     {% endif %}
