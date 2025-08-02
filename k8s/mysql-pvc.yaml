@@ -1,10 +1,11 @@
+# mysql-pvc.yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-pvc
   namespace: final
 spec:
-  storageClassName: gp2
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
