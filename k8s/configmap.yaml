@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: final
+data:
+  S3_FILE: "background.jpg"
+  S3_BUCKET: "your-s3-bucket-name"
+  MY_NAME: "Your Name"
