@@ -4,7 +4,7 @@ Project Plan
 
 ## ✅ Phase 1: Enhance the Flask Application (Day 1–2)
 
-* [ ] Fork/clone the [starter repo](https://github.com/ladunuthala/clo835_summer2023_assignment1)
+* [x] Fork/clone the [starter repo](https://github.com/ladunuthala/clo835_summer2023_assignment1)
 * [ ] Modify HTML to:
 
   * Use background image (remove background color)
