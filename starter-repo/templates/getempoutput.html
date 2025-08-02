@@ -1,35 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Employee Information</title>
+  <title>Employee Information</title>
+  <style>
+    body {
+      background-image: url('{{ background_url }}');
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      font-family: Avenir, sans-serif;
+    }
+    .content {
+      color: black;
+      text-align: center;
+      padding-top: 100px;
+      background-color: rgba(255, 255, 255, 0.85);
+      margin: 50px auto;
+      width: 60%;
+      border-radius: 10px;
+      padding: 30px;
+    }
+    h1, h2 {
+      margin: 20px;
+    }
+    a {
+      color: DodgerBlue;
+      font-size: 18px;
+      text-decoration: none;
+    }
+  </style>
 </head>
-<center>
-	<font color="black" size="5" style="font-family: avenir">
+<body>
+  <div class="content">
+    <h1 style="color: DodgerBlue;">Employee Information</h1>
+    {% if name %}
+      <h2>Requested by {{ name }}</h2>
+    {% endif %}
 
-		<h1 style="color: DodgerBlue">Employee Information</h1>
+    <div>
+      <p><strong>Employee ID:</strong> {{ id }}</p>
+      <p><strong>First Name:</strong> {{ fname }}</p>
+      <p><strong>Last Name:</strong> {{ lname }}</p>
+      <p><strong>Primary Interest:</strong> {{ interest }}</p>
+      <p><strong>Location:</strong> {{ location }}</p>
+    </div>
 
-		<body style="background: {{ color }};">
-
-			<form>
-
-				<div>
-
-			  		Employee ID:<br> {{ id }} <br><br>
-
-			  		First Name:<br> {{ fname }} <br><br>
-
-			  		Last Name:<br> {{ lname }} <br><br>
-
-			  		Primary Interest:<br> {{ interest }} <br><br>
-
-			  		Location:<br> {{ location }} <br><br>
-			  		
-			  	</div>
-
-			</form>
-			<a href="{{ url_for('home') }}">Back</a>
-		</body>
-
-	</font>
-</center>
+    <br>
+    <a href="{{ url_for('home') }}">Back</a>
+  </div>
+</body>
 </html>

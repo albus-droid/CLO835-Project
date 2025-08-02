@@ -1,27 +1,53 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-	<title>Get Employee Information</title>
+  <title>Get Employee Information</title>
+  <style>
+    body {
+      background-image: url('{{ background_url }}');
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      font-family: Avenir, sans-serif;
+    }
+    .content {
+      color: black;
+      text-align: center;
+      padding-top: 100px;
+      background-color: rgba(255, 255, 255, 0.8);
+      margin: 50px auto;
+      width: 60%;
+      border-radius: 10px;
+      padding: 30px;
+    }
+    input, button {
+      height: 30px;
+      font-size: 14pt;
+      margin-bottom: 15px;
+    }
+    button {
+      background: grey;
+      color: white;
+      height: 45px;
+      width: 250px;
+      font: oblique;
+      margin: 10px;
+    }
+  </style>
 </head>
-<center>
-	<font color="black" size="5" style="font-family: avenir">
+<body>
+  <div class="content">
+    <h1 style="color: DodgerBlue;">Employee Information</h1>
+    {% if name %}
+      <h2>Hello from {{ name }}!</h2>
+    {% endif %}
 
-		<h1 style="color: DodgerBlue">Employee Information</h1>
-
-		<body style="background: {{ color }};">
-
-			<form action="/fetchdata" autocomplete="on" method="POST">
-
-				<h2 style="color: grey">Enter Employee ID</h2>
-
-		  		Employee ID:<br> <input style="height:25px;font-size:14pt;" type="number" name="emp_id" autofocus size="40"><br><br>
-
-
-		  		<button type="submit" style="background: grey; height: 45px; width: 200px; color: white; size: 5; font:oblique;">FETCH INFO</button><br><br>
-
-			</form>
-
-		</body>
-	</font>
-</center>
+    <form action="/fetchdata" method="POST">
+      <h2 style="color: grey;">Enter Employee ID</h2>
+      Employee ID:<br>
+      <input type="number" name="emp_id" autofocus size="40"><br>
+      <button type="submit">FETCH INFO</button>
+    </form>
+  </div>
+</body>
 </html>
