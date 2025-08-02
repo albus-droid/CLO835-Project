@@ -1,8 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 from pymysql import connections
 import os
-import random
-import argparse
 import boto3
 import logging
 
@@ -11,20 +9,19 @@ logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
 
-# Environment variables
+# --- Environment variables (for K8s Secret/ConfigMap support) ---
 DBHOST = os.environ.get("DBHOST", "localhost")
 DBUSER = os.environ.get("DBUSER", "root")
 DBPWD = os.environ.get("DBPWD", "password")
 DATABASE = os.environ.get("DATABASE", "employees")
 DBPORT = int(os.environ.get("DBPORT", 3306))
-COLOR_FROM_ENV = os.environ.get("APP_COLOR", "lime")
-MY_NAME = os.environ.get("MY_NAME", "Bastine Johns")
+MY_NAME = os.environ.get("MY_NAME", "Your Name")
 
-# S3 Config
 S3_BUCKET = os.environ.get("S3_BUCKET")
 S3_FILE = os.environ.get("S3_FILE")
+LOCAL_IMAGE = "static/background.jpg"
 
-# MySQL connection
+# --- MySQL connection ---
 db_conn = connections.Connection(
     host=DBHOST,
     port=DBPORT,
@@ -33,42 +30,39 @@ db_conn = connections.Connection(
     db=DATABASE
 )
 
-# Color codes
-color_codes = {
-    "red": "#e74c3c",
-    "green": "#16a085",
-    "blue": "#89CFF0",
-    "blue2": "#30336b",
-    "pink": "#f4c2c2",
-    "darkblue": "#130f40",
-    "lime": "#C1FF9C",
-}
-SUPPORTED_COLORS = ",".join(color_codes.keys())
-COLOR = random.choice(list(color_codes.keys()))
-
-# Helper to get background image URL
-def get_background_url():
+# --- Download S3 image to static folder ---
+def fetch_and_cache_image(local_path=LOCAL_IMAGE):
+    if not S3_BUCKET or not S3_FILE:
+        logging.error("S3_BUCKET or S3_FILE not set in environment!")
+        return None
+    # Always try to fetch on startup/each call; you can optimize this if needed.
+    s3 = boto3.client('s3')
     try:
-        s3 = boto3.client('s3')
-        logging.info(f"Fetching background image from s3://{S3_BUCKET}/{S3_FILE}")
-        return s3.generate_presigned_url(
-            ClientMethod='get_object',
-            Params={'Bucket': S3_BUCKET, 'Key': S3_FILE},
-            ExpiresIn=3600
-        )
+        s3.download_file(S3_BUCKET, S3_FILE, local_path)
+        logging.info(f"Downloaded S3 image to {local_path}")
+        return local_path
     except Exception as e:
-        logging.error(f"Failed to generate S3 URL: {e}")
+        logging.error(f"Failed to download S3 image: {e}")
         return None
 
-@app.route("/", methods=['GET', 'POST'])
+def get_background_url():
+    local_path = LOCAL_IMAGE
+    fetch_and_cache_image(local_path)
+    local_url = url_for('static', filename='background.jpg')
+    logging.info(f"Local image URL: {local_url}")
+    return local_url
+
+# --- Flask Routes ---
+
+@app.route("/", methods=['GET'])
 def home():
     url = get_background_url()
-    return render_template('addemp.html', color=color_codes[COLOR], background_url=url, name=MY_NAME)
+    return render_template('addemp.html', background_url=url, name=MY_NAME)
 
-@app.route("/about", methods=['GET', 'POST'])
+@app.route("/about", methods=['GET'])
 def about():
     url = get_background_url()
-    return render_template('about.html', color=color_codes[COLOR], background_url=url, name=MY_NAME)
+    return render_template('about.html', background_url=url, name=MY_NAME)
 
 @app.route("/addemp", methods=['POST'])
 def AddEmp():
@@ -80,7 +74,6 @@ def AddEmp():
 
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
-
     try:
         cursor.execute(insert_sql, (emp_id, first_name, last_name, primary_skill, location))
         db_conn.commit()
@@ -89,20 +82,19 @@ def AddEmp():
         cursor.close()
 
     url = get_background_url()
-    return render_template('addempoutput.html', name=emp_name, color=color_codes[COLOR], background_url=url)
+    return render_template('addempoutput.html', name=emp_name, background_url=url)
 
-@app.route("/getemp", methods=['GET', 'POST'])
+@app.route("/getemp", methods=['GET'])
 def GetEmp():
     url = get_background_url()
-    return render_template("getemp.html", color=color_codes[COLOR], background_url=url, name=MY_NAME)
+    return render_template("getemp.html", background_url=url, name=MY_NAME)
 
-@app.route("/fetchdata", methods=['GET', 'POST'])
+@app.route("/fetchdata", methods=['POST'])
 def FetchData():
     emp_id = request.form['emp_id']
     output = {}
     select_sql = "SELECT emp_id, first_name, last_name, primary_skill, location FROM employee WHERE emp_id=%s"
     cursor = db_conn.cursor()
-
     try:
         cursor.execute(select_sql, (emp_id,))
         result = cursor.fetchone()
@@ -123,27 +115,11 @@ def FetchData():
     url = get_background_url()
     return render_template("getempoutput.html", id=output["emp_id"], fname=output["first_name"],
                            lname=output["last_name"], interest=output["primary_skills"],
-                           location=output["location"], color=color_codes[COLOR],
-                           background_url=url, name=MY_NAME)
+                           location=output["location"], background_url=url, name=MY_NAME)
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--color', required=False)
-    args = parser.parse_args()
-
-    if args.color:
-        COLOR = args.color
-        logging.info(f"Color from command line argument = {COLOR}")
-        if COLOR_FROM_ENV:
-            logging.info(f"Environment color overridden by CLI: {COLOR_FROM_ENV}")
-    elif COLOR_FROM_ENV:
-        COLOR = COLOR_FROM_ENV
-        logging.info(f"Color from environment variable = {COLOR}")
-    else:
-        logging.info(f"No color specified. Using random color = {COLOR}")
-
-    if COLOR not in color_codes:
-        logging.error(f"Unsupported color '{COLOR}'. Supported: {SUPPORTED_COLORS}")
-        exit(1)
-
+    # Make sure the static dir exists
+    os.makedirs('static', exist_ok=True)
+    # Download the background at startup so it's ready for the first request
+    fetch_and_cache_image()
     app.run(host='0.0.0.0', port=81, debug=True)
