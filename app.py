@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request
 from pymysql import connections
 import os
 import boto3
@@ -19,7 +19,6 @@ MY_NAME = os.environ.get("MY_NAME", "Your Name")
 
 S3_BUCKET = os.environ.get("S3_BUCKET")
 S3_FILE = os.environ.get("S3_FILE")
-LOCAL_IMAGE = "static/background.jpg"
 
 # --- MySQL connection ---
 db_conn = connections.Connection(
@@ -30,38 +29,34 @@ db_conn = connections.Connection(
     db=DATABASE
 )
 
-# --- Download S3 image to static folder ---
-def fetch_and_cache_image(local_path=LOCAL_IMAGE):
+# --- Presigned S3 URL helper ---
+def get_presigned_s3_url():
     if not S3_BUCKET or not S3_FILE:
         logging.error("S3_BUCKET or S3_FILE not set in environment!")
-        return None
-    # Always try to fetch on startup/each call; you can optimize this if needed.
+        return ""  # Optionally, return a fallback URL here
     s3 = boto3.client('s3')
     try:
-        s3.download_file(S3_BUCKET, S3_FILE, local_path)
-        logging.info(f"Downloaded S3 image to {local_path}")
-        return local_path
+        url = s3.generate_presigned_url(
+            'get_object',
+            Params={'Bucket': S3_BUCKET, 'Key': S3_FILE},
+            ExpiresIn=3600
+        )
+        logging.info(f"Generated presigned S3 URL: {url}")
+        return url
     except Exception as e:
-        logging.error(f"Failed to download S3 image: {e}")
-        return None
-
-def get_background_url():
-    local_path = LOCAL_IMAGE
-    fetch_and_cache_image(local_path)
-    local_url = url_for('static', filename='background.jpg')
-    logging.info(f"Local image URL: {local_url}")
-    return local_url
+        logging.error(f"Failed to generate presigned URL: {e}")
+        return ""
 
 # --- Flask Routes ---
 
 @app.route("/", methods=['GET'])
 def home():
-    url = get_background_url()
+    url = get_presigned_s3_url()
     return render_template('addemp.html', background_url=url, name=MY_NAME)
 
 @app.route("/about", methods=['GET'])
 def about():
-    url = get_background_url()
+    url = get_presigned_s3_url()
     return render_template('about.html', background_url=url, name=MY_NAME)
 
 @app.route("/addemp", methods=['POST'])
@@ -81,12 +76,12 @@ def AddEmp():
     finally:
         cursor.close()
 
-    url = get_background_url()
+    url = get_presigned_s3_url()
     return render_template('addempoutput.html', name=emp_name, background_url=url)
 
 @app.route("/getemp", methods=['GET'])
 def GetEmp():
-    url = get_background_url()
+    url = get_presigned_s3_url()
     return render_template("getemp.html", background_url=url, name=MY_NAME)
 
 @app.route("/fetchdata", methods=['POST'])
@@ -112,14 +107,10 @@ def FetchData():
     finally:
         cursor.close()
 
-    url = get_background_url()
+    url = get_presigned_s3_url()
     return render_template("getempoutput.html", id=output["emp_id"], fname=output["first_name"],
                            lname=output["last_name"], interest=output["primary_skills"],
                            location=output["location"], background_url=url, name=MY_NAME)
 
 if __name__ == '__main__':
-    # Make sure the static dir exists
-    os.makedirs('static', exist_ok=True)
-    # Download the background at startup so it's ready for the first request
-    fetch_and_cache_image()
     app.run(host='0.0.0.0', port=81, debug=True)
