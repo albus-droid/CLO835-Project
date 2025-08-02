@@ -4,7 +4,7 @@
   <title>{{ header or 'Add Employee Output' }}</title>
   <style>
     body {
-      background-image: url('{{ background_url }}');
+      background-image: url('{{ background_url | safe }}');
       background-size: cover;
       background-position: center;
       margin: 0;
