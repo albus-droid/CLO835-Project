@@ -50,12 +50,12 @@ Project Plan
 
 ## ✅ Phase 4: EKS Cluster Setup (Day 4)
 
-* [ ] Use `eksctl`:
+* [x] Use `eksctl`:
 
   ```bash
   eksctl create cluster --name clo835-final --nodes=2
   ```
-* [ ] Create namespace:
+* [x] Create namespace:
 
   ```bash
   kubectl create namespace final
