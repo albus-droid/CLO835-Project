@@ -5,7 +5,7 @@ metadata:
   name: mysql-pvc
   namespace: final
 spec:
-  storageClassName: manual
+  storageClassName: ebs-sc
   accessModes:
     - ReadWriteOnce
   resources:
