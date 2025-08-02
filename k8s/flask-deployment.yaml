@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+  namespace: final
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+      - name: flask
+        image: <your-aws-account-id>.dkr.ecr.<your-region>.amazonaws.com/<your-repo>:latest
+        ports:
+          - containerPort: 81
+        env:
+          - name: DBHOST
+            value: "mysql"
+          - name: DBUSER
+            valueFrom:
+              secretKeyRef:
+                name: app-secret
+                key: DBUSER
+          - name: DBPWD
+            valueFrom:
+              secretKeyRef:
+                name: app-secret
+                key: DBPWD
+          - name: DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: app-secret
+                key: DATABASE
+          - name: DBPORT
+            value: "3306"
+          - name: S3_BUCKET
+            valueFrom:
+              configMapKeyRef:
+                name: app-config
+                key: S3_BUCKET
+          - name: S3_FILE
+            valueFrom:
+              configMapKeyRef:
+                name: app-config
+                key: S3_FILE
+          - name: MY_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: app-config
+                key: MY_NAME
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: app-secret
+                key: AWS_ACCESS_KEY_ID
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: app-secret
+                key: AWS_SECRET_ACCESS_KEY
+          - name: AWS_SESSION_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: app-secret
+                key: AWS_SESSION_TOKEN
