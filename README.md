@@ -39,12 +39,12 @@ Project Plan
 
 ## ✅ Phase 3: GitHub + ECR Integration (Day 3–4)
 
-* [ ] Push code to a GitHub repo
-* [ ] Set up GitHub Actions (`.github/workflows/main.yml`)
+* [x] Push code to a GitHub repo
+* [x] Set up GitHub Actions (`.github/workflows/main.yml`)
 
   * Build + test app
   * Push image to Amazon ECR
-* [ ] Store ECR credentials as GitHub Secrets
+* [x] Store ECR credentials as GitHub Secrets
 
 ---
 
