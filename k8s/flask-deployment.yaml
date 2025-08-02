@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: flask
-        image: <your-aws-account-id>.dkr.ecr.<your-region>.amazonaws.com/<your-repo>:latest
+        image: 164340264957.dkr.ecr.us-east-1.amazonaws.com/finalproject:latest
         ports:
           - containerPort: 81
         env:
