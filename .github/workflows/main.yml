@@ -50,3 +50,17 @@ jobs:
       - name: Push image to Amazon ECR
         run: |
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
+
+      # === MySQL Custom Build & Push ===
+      - name: Build MySQL Docker image
+        run: |
+          docker build -t ${{ secrets.ECR_REPO_MYSQL }}:latest -f Dockerfile_mysql .
+
+      - name: Tag MySQL image
+        run: |
+          docker tag ${{ secrets.ECR_REPO_MYSQL }}:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_MYSQL }}:latest
+
+      - name: Push MySQL image to ECR
+        run: |
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_MYSQL }}:latest
+
