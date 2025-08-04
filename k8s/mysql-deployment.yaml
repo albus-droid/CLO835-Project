@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:8
+        image: 164340264957.dkr.ecr.us-east-1.amazonaws.com/mysql_flask:latest
         env:
           - name: MYSQL_ROOT_PASSWORD
             valueFrom:
