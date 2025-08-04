@@ -79,12 +79,12 @@ def AddEmp():
     url = get_presigned_s3_url()
     return render_template('addempoutput.html', name=emp_name, background_url=url)
 
-@app.route("/getemp", methods=['GET'])
+@app.route("/getemp", methods=['GET', 'POST'])
 def GetEmp():
     url = get_presigned_s3_url()
     return render_template("getemp.html", background_url=url, name=MY_NAME)
 
-@app.route("/fetchdata", methods=['POST'])
+@app.route("/fetchdata", methods=['GET', 'POST'])
 def FetchData():
     emp_id = request.form['emp_id']
     output = {}
