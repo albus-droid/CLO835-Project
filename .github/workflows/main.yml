@@ -1,9 +1,8 @@
 name: Build and Push to Amazon ECR
 
 on:
-  push:
-    branches: ["main"]
-
+  workflow_dispatch:   # <-- ONLY this trigger
+  
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
