@@ -12,6 +12,10 @@ availabilityZones: ["us-east-1a", "us-east-1b", "us-east-1c"]
 iam:
   serviceRoleARN: arn:aws:iam::164340264957:role/LabRole
 
+addons:
+  - name: aws-ebs-csi-driver
+    version: latest
+
 managedNodeGroups:
   - name: nodegroup
     desiredCapacity: 2
